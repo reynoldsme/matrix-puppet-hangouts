@@ -1,0 +1,17 @@
+[Unit]
+Description=Matrix bridge for Google Hangouts
+Documentation=https://github.com/matrix-hacks/matrix-puppet-hangouts
+After=network.target matrix-synapse.service
+
+[Service]
+
+WorkingDirectory=/opt/matrix-puppet-hangouts
+Environment=DEBUG=*matrix-puppet:*
+Type=simple
+User=ubuntu
+#ExecStart=/usr/bin/node /opt/matrix-puppet-hangouts/index.js
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
