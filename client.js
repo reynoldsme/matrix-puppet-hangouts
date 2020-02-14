@@ -22,9 +22,14 @@ class Client extends EventEmitter {
 
     this.hangupsProc.stdout.on("data", (str) => {
       debugVerbose("got message from hangups before JSON.parse():", str.toString());
-      var data = JSON.parse(str);
-      debugVerbose("emitting message", data);
-      this.emit('message', data);
+      // XXX:NOTE: See https://github.com/matrix-hacks/matrix-puppet-hangouts/pull/24 for rationale
+      try {
+        var data = JSON.parse(str);
+        debugVerbose("emitting message", data);
+        this.emit('message', data);
+      } catch(error) {
+        debugVerbose("ERROR: incorrect JSON format: ", str.toString());
+      }
     });
 
     console.log('started hangups child');
